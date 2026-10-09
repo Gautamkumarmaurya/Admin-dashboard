@@ -157,6 +157,49 @@ Local setup ke liye project root se `npm install`, backend dependencies ke liye 
 
 Production ke liye frontend static build ko static hosting par deploy kiya ja sakta hai, aur Express backend ko Node-compatible web service par. Frontend ke `VITE_API_BASE_URL` ko deployed backend API URL par set karein. Backend par production `MONGO_URI`, `CLIENT_URL`, aur Cloudinary ke teen variables hosting provider ke secret settings mein set karein. Frontend URL ko backend CORS configuration mein allow karna, HTTPS use karna, production admin password change/seed access restrict karna aur health endpoint check karna zaroori hai.
 
+#### Render par backend API deploy karna
+
+GitHub repository ka root `Admin-dashboard` hai. Backend `ShopAdmin-MERN-Production/backend/` mein hai, jabki React frontend alag top-level `admin-dashboard/` mein hai. Isliye API service ka **Root Directory backend folder hona chahiye**, repository root ya sirf `ShopAdmin-MERN-Production` nahi.
+
+Repo-root [`render.yaml`](../../render.yaml) Blueprint mein API service ki yeh settings di gayi hain:
+
+| Render setting | Value |
+| --- | --- |
+| Root Directory | `ShopAdmin-MERN-Production/backend` |
+| Build Command | `npm ci` |
+| Start Command | `npm start` |
+| Health Check Path | `/api/v1/health` |
+
+Existing Render Web Service ko dashboard se configure karte waqt yehi values set karein. `npm start` backend ka production command hai; root package ka `npm run backend` development ke liye `nodemon` chalata hai aur Render ke production start command ke roop mein use nahi karna chahiye. Root directory backend ke andar hone se `npm ci` sahi `backend/package-lock.json` aur API dependencies install karega. Server Render ke `PORT` environment variable ko pehle se use karta hai.
+
+Render service ke Environment mein yeh values set karein:
+
+| Variable | Value |
+| --- | --- |
+| `NODE_ENV` | `production` |
+| `MONGO_URI` | MongoDB Atlas ka production connection URI |
+| `JWT_SECRET` | Ek naya, random, lamba secret; GitHub mein commit na karein |
+| `CLIENT_URL` | Deployed frontend ka exact origin, jaise `https://your-dashboard.onrender.com` |
+| `CLOUDINARY_CLOUD_NAME` | Cloudinary cloud name (image upload use karte waqt) |
+| `CLOUDINARY_API_KEY` | Cloudinary API key (image upload use karte waqt) |
+| `CLOUDINARY_API_SECRET` | Cloudinary secret (sirf Render secret environment setting mein) |
+
+`render.yaml` `MONGO_URI` aur `CLIENT_URL` ko deploy ke waqt manually set karne ke liye chhodta hai, aur `JWT_SECRET` ko generate karne ke liye configure karta hai. Cloudinary variables optional hain jab tak product-image upload enable na karna ho.
+
+Frontend ko alag **Render Static Site** ke roop mein deploy karein:
+
+| Render setting | Value |
+| --- | --- |
+| Root Directory | `admin-dashboard` |
+| Build Command | `npm ci && npm run build` |
+| Publish Directory | `dist` |
+| Environment variable | `VITE_API_BASE_URL=https://<your-api-service>.onrender.com/api/v1` |
+| Rewrite rule | Source `/*`, destination `/index.html`, action `Rewrite` |
+
+`CLIENT_URL` mein Static Site ka exact HTTPS origin dena zaroori hai, bina trailing path ke. Frontend ka `VITE_API_BASE_URL` frontend build ke waqt inject hota hai; ise change karne ke baad Static Site redeploy karein.
+
+Deploy ke baad API health URL `https://<your-api-service>.onrender.com/api/v1/health` kholkar `200` aur `"database":"connected"` verify karein, phir Static Site se login aur data-loading test karein. Render dashboard ke deploy logs sign-in protected hote hain; agar deployment phir fail ho, Render ke **Events/Logs** se pehla failed build/deploy error copy karke share karein (credentials, connection strings, tokens ya secrets hata kar).
+
 Validation commands:
 
 ```bash
