@@ -1,0 +1,66 @@
+import {
+  LayoutDashboard,
+  Package,
+  ShoppingCart,
+  Users,
+  ChartNoAxesCombined,
+  CreditCard,
+  Ticket,
+  Star,
+  Bell,
+  Settings,
+} from "lucide-react";
+
+// Application navigation
+export const navigation = [
+  [
+    "Dashboard",
+    "/dashboard",
+    LayoutDashboard,
+  ],
+  [
+    "Products",
+    "/products",
+    Package,
+  ],
+  [
+    "Orders",
+    "/orders",
+    ShoppingCart,
+  ],
+  [
+    "Customers",
+    "/customers",
+    Users,
+  ],
+  [
+    "Analytics",
+    "/analytics",
+    ChartNoAxesCombined,
+  ],
+  [
+    "Payments",
+    "/payments",
+    CreditCard,
+  ],
+  [
+    "Coupons",
+    "/coupons",
+    Ticket,
+  ],
+  [
+    "Reviews",
+    "/reviews",
+    Star,
+  ],
+  [
+    "Notifications",
+    "/notifications",
+    Bell,
+  ],
+  [
+    "Settings",
+    "/settings",
+    Settings,
+  ],
+];

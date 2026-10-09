@@ -1,0 +1,6 @@
+{
+  "name":"shopadmin-mern",
+  "private":true,
+  "scripts":{"dev":"concurrently --kill-others --names api,web --prefix-colors blue,green \"npm --prefix backend run dev\" \"npm --prefix ../admin-dashboard run dev -- --host 0.0.0.0\"","backend":"npm --prefix backend run dev","frontend":"npm --prefix ../admin-dashboard run dev -- --host 0.0.0.0","seed":"npm --prefix backend run seed","build":"npm --prefix ../admin-dashboard run build","test":"npm --prefix backend test","coverage":"npm --prefix backend run test:coverage","lint":"npm --prefix backend run lint"},
+  "devDependencies":{"concurrently":"^9.1.2"}
+}
