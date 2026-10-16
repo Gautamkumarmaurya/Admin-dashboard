@@ -9,10 +9,10 @@ export async function seedAdmin() {
 
   if (!user) {
     user = await User.create({
-      name: "Admin",
+      name: "User",
       email: "user@example.com",
       password: await hashPassword("user123"),
-      role: "admin",
+      role: "customer",
     });
   }
 
