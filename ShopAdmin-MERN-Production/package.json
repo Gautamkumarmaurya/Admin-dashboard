@@ -16,6 +16,7 @@
     "concurrently": "^9.1.2"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "cookie": "^2.0.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
