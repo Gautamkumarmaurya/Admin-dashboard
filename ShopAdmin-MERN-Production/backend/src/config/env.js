@@ -9,8 +9,7 @@ const env = {
   port: Number(process.env.PORT || 5001),
 
   mongoUri:
-    process.env.MONGO_URI ||
-    "mongodb://127.0.0.1:27017/admin_dashboard",
+    process.env.MONGO_URI, //|| "mongodb://127.0.0.1:27017/admin_dashboard",
 
   jwtSecret:
     process.env.JWT_SECRET || "development_only_change_me",
