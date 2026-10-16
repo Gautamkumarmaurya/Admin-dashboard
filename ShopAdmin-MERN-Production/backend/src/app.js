@@ -117,6 +117,13 @@ app.use(
   analyticsRoutes
 );
 
+app.use(
+  cors({
+    origin: env.clientUrl,
+    credentials: true,
+  })
+);
+
 // Error handling middleware
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
